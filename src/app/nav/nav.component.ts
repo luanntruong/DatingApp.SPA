@@ -8,6 +8,7 @@ import { AuthService } from '../_services/auth.service';
 })
 export class NavComponent implements OnInit {
   model: any = {};
+
   constructor(private authService: AuthService) { }
 
   ngOnInit() {
@@ -17,7 +18,7 @@ export class NavComponent implements OnInit {
     this.authService.login(this.model).subscribe(data => {
       console.log('logged in successfully');
     }, error => {
-      console.log('failed to login');
+      console.log(error);
     });
   }
 
