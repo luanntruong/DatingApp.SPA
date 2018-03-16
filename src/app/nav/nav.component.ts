@@ -10,17 +10,18 @@ import { Router } from '@angular/router';
 })
 export class NavComponent implements OnInit {
   model: any = {};
-
+  username: string;
   constructor(private authService: AuthService, private alertify: AlertifyService, private router: Router) { }
 
   ngOnInit() {
   }
 
   login() {
+    this.username = this.authService.decodedToken.unique_name;
     this.authService.login(this.model).subscribe(data => {
-      this.alertify.success('logged in successfully');
+      this.alertify.success('Logged in successfully');
     }, error => {
-      this.alertify.error(error);
+      this.alertify.error('Unvalid username or password');
     }, () => {
       this.router.navigate(['/members']);
     });
@@ -29,7 +30,7 @@ export class NavComponent implements OnInit {
   logout() {
     this.authService.userToken = null;
     localStorage.removeItem('token');
-    this.alertify.message('logged out');
+    this.alertify.message('Logged out successfully');
     this.router.navigate(['/home']);
   }
 

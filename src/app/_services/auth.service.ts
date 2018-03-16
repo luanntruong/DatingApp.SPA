@@ -22,14 +22,13 @@ export class AuthService {
             if (user) {
                 localStorage.setItem('token', user.tokenString);
                 this.decodedToken = this.jwtHelper.decodeToken(user.tokenString);
-                console.log(this.decodedToken);
                 this.userToken = user.tokenString;
             }
-        }).catch(this.handlerError);
+        }).catch(this.handleError);
     }
 
     register(model: any) {
-        return this.http.post(this.baseUrl + 'register', model, this.requestOptions()).catch(this.handlerError);
+        return this.http.post(this.baseUrl + 'register', model, this.requestOptions()).catch(this.handleError);
     }
 
     loggedIn() {
@@ -41,7 +40,7 @@ export class AuthService {
         return new RequestOptions({ headers: headers });
     }
 
-    private handlerError(error: any) {
+    private handleError(error: any) {
         const applicationError = error.headers.get('Application-Error');
         if (applicationError) {
             return Observable.throw(applicationError);

@@ -11,13 +11,13 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse" >
       <ul class="nav navbar-nav" *ngIf="loggedIn()">
-        <li [routerLinkActive]="active">
+        <li routerLinkActive="active">
           <a [routerLink]="['/members']" routerLinkActive="router-link-active" >Members</a>
         </li>
-        <li [routerLinkActive]="active">
+        <li routerLinkActive="active">
           <a [routerLink]="['/lists']" routerLinkActive="router-link-active" >Lists</a>
         </li>
-        <li [routerLinkActive]="active">
+        <li routerLinkActive="active">
           <a [routerLink]="['/messages']" routerLinkActive="router-link-active" >Message</a>
         </li>  
       </ul>
@@ -35,7 +35,8 @@
       <ul *ngIf="loggedIn()" class="nav navbar-nav navbar-right">
         <li class="dropdown" dropdown>
           <a (click)="false" class="dropdown-toggle" dropdownToggle>
-            Welcome {{authService.decodedToken?.unique_name | titlecase}} <span class="caret"></span></a>
+            Welcome {{username | titlecase}} <span class="caret"></span>
+          </a>
           <ul class="dropdown-menu" *dropdownMenu>
             <li><a href="#"><i class="fa fa-user"></i> Edit Profile</a></li>
             <li role="separator" class="divider"></li>
