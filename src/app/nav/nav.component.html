@@ -12,7 +12,7 @@
     <div id="navbar" class="navbar-collapse collapse" >
       <ul class="nav navbar-nav" *ngIf="loggedIn()">
         <li routerLinkActive="active">
-          <a [routerLink]="['/members']" routerLinkActive="router-link-active" >Members</a>
+          <a [routerLink]="['/members']" routerLinkActive="router-link-active" >Matches</a>
         </li>
         <li routerLinkActive="active">
           <a [routerLink]="['/lists']" routerLinkActive="router-link-active" >Lists</a>
@@ -38,7 +38,7 @@
             Welcome {{username | titlecase}} <span class="caret"></span>
           </a>
           <ul class="dropdown-menu" *dropdownMenu>
-            <li><a href="#"><i class="fa fa-user"></i> Edit Profile</a></li>
+            <li><a [routerLink]="['/member/edit']" routerLinkActive="router-link-active" ><i class="fa fa-user"></i> Edit Profile</a></li>
             <li role="separator" class="divider"></li>
             <li><a (click)="logout()"><i class="fa fa-sign-out"></i> Logout</a></li>
           </ul>
