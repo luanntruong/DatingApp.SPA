@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { User } from '../../_models/User';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { User } from '../../_models/user';
 import { UserService } from '../../_services/user.service';
 import { AlertifyService } from '../../_services/alertify.service';
 import { ActivatedRoute } from '@angular/router';
-import { NgxGalleryOptions, NgxGalleryAnimation } from 'ngx-gallery';
-import { NgxGalleryImage } from 'ngx-gallery';
+import { NgxGalleryImage, NgxGalleryOptions, NgxGalleryAnimation } from 'ngx-gallery';
+import { TabsetComponent } from 'ngx-bootstrap/tabs/tabset.component';
 
 @Component({
   selector: 'app-member-detail',
@@ -12,12 +12,12 @@ import { NgxGalleryImage } from 'ngx-gallery';
   styleUrls: ['./member-detail.component.css']
 })
 export class MemberDetailComponent implements OnInit {
+  @ViewChild('memberTabs') memberTabs: TabsetComponent;
   user: User;
   galleryOptions: NgxGalleryOptions[];
   galleryImages: NgxGalleryImage[];
 
-  constructor(
-    private userService: UserService,
+  constructor(private userService: UserService,
     private alertify: AlertifyService,
     private route: ActivatedRoute) { }
 
@@ -25,17 +25,19 @@ export class MemberDetailComponent implements OnInit {
     this.route.data.subscribe(data => {
       this.user = data['user'];
     });
+    this.route.queryParams.subscribe(params => {
+      this.memberTabs.tabs[params['tab']].active = true;
+    });
 
-    this.galleryOptions = [
-      {
-        width: '500px',
-        height: '500px',
-        imagePercent: 100,
-        thumbnailsColumns: 4,
-        imageAnimation: NgxGalleryAnimation.Slide,
-        preview: false,
-      }
-    ];
+    this.galleryOptions = [{
+      width: '500px',
+      height: '500px',
+      imagePercent: 100,
+      thumbnailsColumns: 4,
+      imageAnimation: NgxGalleryAnimation.Slide,
+      preview: false
+    }];
+
     this.galleryImages = this.getImages();
   }
 
@@ -50,6 +52,10 @@ export class MemberDetailComponent implements OnInit {
       });
     }
     return imageUrls;
+  }
+
+  selectTab(tabId: number) {
+    this.memberTabs.tabs[tabId].active = true;
   }
 
 }
