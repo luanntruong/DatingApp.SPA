@@ -17,7 +17,6 @@ import { appRoutes } from './routes';
 import { AuthGuard } from './_guards/auth.guard';
 import { UserService } from './_services/user.service';
 import { MemberCardComponent } from './members/member-card/member-card.component';
-import { AuthModule } from './auth/auth.module';
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { MemberListResolver } from './_resolvers/member-list.resolver';
@@ -31,7 +30,18 @@ import { TimeAgoPipe } from 'time-ago-pipe';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { MessagesResolver } from './_resolvers/messages.resolver';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { HttpClientModule } from '@angular/common/http';
+import { ErrorInterceptorProvider } from './_services/error.interceptor';
 
+export function getAccessToken(): string {
+  return localStorage.getItem('token');
+}
+
+export const jwtConfig = {
+  tokenGetter: getAccessToken,
+  whitelistedDomains: ['localhost:5000']
+};
 
 @NgModule({
   declarations: [
@@ -56,13 +66,16 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     ReactiveFormsModule,
     BsDropdownModule.forRoot(),
     RouterModule.forRoot(appRoutes),
-    AuthModule,
     TabsModule.forRoot(),
     NgxGalleryModule,
     FileUploadModule,
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: jwtConfig
+    })
   ],
   providers: [
     AuthService,
@@ -74,7 +87,8 @@ import { MemberMessagesComponent } from './members/member-messages/member-messag
     MemberEditResolver,
     ListsResolver,
     MessagesResolver,
-    PreventUnsavedChanges
+    PreventUnsavedChanges,
+    ErrorInterceptorProvider
   ],
   bootstrap: [AppComponent]
 })
